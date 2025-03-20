@@ -21,6 +21,7 @@ import { useArtifact } from '@/hooks/use-artifact';
 import equal from 'fast-deep-equal';
 import { SpreadsheetEditor } from './sheet-editor';
 import { ImageEditor } from './image-editor';
+import { MapEditor } from './map-editor';
 
 interface DocumentPreviewProps {
   isReadonly: boolean;
@@ -276,6 +277,12 @@ const DocumentContent = ({ document }: { document: Document }) => {
           content={document.content ?? ''}
           isCurrentVersion={true}
           currentVersionIndex={0}
+          status={artifact.status}
+          isInline={true}
+        />
+      ) : document.kind === 'map' ? ( // 添加对 map 类型的处理
+        <MapEditor
+          content={document.content ?? ''}
           status={artifact.status}
           isInline={true}
         />
