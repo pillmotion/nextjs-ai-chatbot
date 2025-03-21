@@ -12,6 +12,7 @@ const NO_PROXY_DOMAINS = [
 const PROXY_DOMAINS = [
   "openai.com",
   "api.x.ai",
+  "api.groq.com",
 ];
 
 global.fetch = (
