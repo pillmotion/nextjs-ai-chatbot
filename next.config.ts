@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
   experimental: {
     ppr: true,
   },
-  optimizeFonts: false,
   images: {
     remotePatterns: [
       {
