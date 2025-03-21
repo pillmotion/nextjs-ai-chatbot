@@ -135,4 +135,8 @@ export default {
       error: 'Failed to delete chat',
     },
   },
+  messages: {
+    edit_message: 'Edit message',
+    thinking: 'Hmm...',
+  },
 } as const;

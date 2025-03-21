@@ -19,6 +19,7 @@ import { MessageEditor } from './message-editor';
 import { DocumentPreview } from './document-preview';
 import { MessageReasoning } from './message-reasoning';
 import { UseChatHelpers } from '@ai-sdk/react';
+import { useI18n } from '@/locales/client';
 
 const PurePreviewMessage = ({
   chatId,
@@ -38,6 +39,7 @@ const PurePreviewMessage = ({
   isReadonly: boolean;
 }) => {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const t = useI18n();
 
   return (
     <AnimatePresence>
@@ -84,6 +86,13 @@ const PurePreviewMessage = ({
               const { type } = part;
               const key = `message-${message.id}-part-${index}`;
 
+              console.log(`[消息部分]`, {
+                messageId: message.id,
+                partIndex: index,
+                partType: type,
+                partContent: part
+              });
+
               if (type === 'reasoning') {
                 return (
                   <MessageReasoning
@@ -112,7 +121,7 @@ const PurePreviewMessage = ({
                               <PencilEditIcon />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Edit message</TooltipContent>
+                          <TooltipContent>{t('messages.edit_message')}</TooltipContent>
                         </Tooltip>
                       )}
 
@@ -149,6 +158,14 @@ const PurePreviewMessage = ({
               if (type === 'tool-invocation') {
                 const { toolInvocation } = part;
                 const { toolName, toolCallId, state } = toolInvocation;
+
+                console.log(`[工具调用]`, {
+                  toolName,
+                  toolCallId,
+                  state,
+                  args: state === 'call' ? toolInvocation.args : null,
+                  result: state === 'result' ? toolInvocation.result : null
+                });
 
                 if (state === 'call') {
                   const { args } = toolInvocation;
@@ -244,6 +261,7 @@ export const PreviewMessage = memo(
 
 export const ThinkingMessage = () => {
   const role = 'assistant';
+  const t = useI18n();
 
   return (
     <motion.div
@@ -267,7 +285,7 @@ export const ThinkingMessage = () => {
 
         <div className="flex flex-col gap-2 w-full">
           <div className="flex flex-col gap-4 text-muted-foreground">
-            Hmm...
+            {t('messages.thinking')}
           </div>
         </div>
       </div>

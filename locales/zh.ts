@@ -135,4 +135,8 @@ export default {
       error: '删除聊天失败',
     },
   },
+  messages: {
+    edit_message: '编辑消息',
+    thinking: '思考中...',
+  },
 } as const;
