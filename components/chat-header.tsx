@@ -1,17 +1,18 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useWindowSize } from 'usehooks-ts';
 
 import { ModelSelector } from '@/components/model-selector';
 import { SidebarToggle } from '@/components/sidebar-toggle';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, VercelIcon } from './icons';
+import { PlusIcon } from './icons';
 import { useSidebar } from './ui/sidebar';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { VisibilityType, VisibilitySelector } from './visibility-selector';
+import type { VisibilityType } from './visibility-selector';
+import { VisibilitySelector } from './visibility-selector';
+import { useI18n } from '@/locales/client';
 
 function PureChatHeader({
   chatId,
@@ -26,6 +27,7 @@ function PureChatHeader({
 }) {
   const router = useRouter();
   const { open } = useSidebar();
+  const t = useI18n();
 
   const { width: windowWidth } = useWindowSize();
 
@@ -45,10 +47,10 @@ function PureChatHeader({
               }}
             >
               <PlusIcon />
-              <span className="md:sr-only">New Chat</span>
+              <span className="md:sr-only">{t('chat.newChat')}</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>New Chat</TooltipContent>
+          <TooltipContent>{t('chat.newChat')}</TooltipContent>
         </Tooltip>
       )}
 

@@ -22,7 +22,8 @@ import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { SuggestedActions } from './suggested-actions';
 import equal from 'fast-deep-equal';
-import { UseChatHelpers } from '@ai-sdk/react';
+import type { UseChatHelpers } from '@ai-sdk/react';
+import { useI18n } from '@/locales/client';
 
 function PureMultimodalInput({
   chatId,
@@ -53,6 +54,7 @@ function PureMultimodalInput({
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { width } = useWindowSize();
+  const t = useI18n();
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -149,7 +151,7 @@ function PureMultimodalInput({
       const { error } = await response.json();
       toast.error(error);
     } catch (error) {
-      toast.error('Failed to upload file, please try again!');
+      toast.error(t('chat.input.uploadError'));
     }
   };
 
@@ -222,7 +224,7 @@ function PureMultimodalInput({
       <Textarea
         data-testid="multimodal-input"
         ref={textareaRef}
-        placeholder="Send a message..."
+        placeholder={t('chat.input.placeholder')}
         value={input}
         onChange={handleInput}
         className={cx(
@@ -240,7 +242,7 @@ function PureMultimodalInput({
             event.preventDefault();
 
             if (status !== 'ready') {
-              toast.error('Please wait for the model to finish its response!');
+              toast.error(t('chat.input.waitModelResponse'));
             } else {
               submitForm();
             }

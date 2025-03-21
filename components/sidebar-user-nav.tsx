@@ -4,6 +4,7 @@ import Image from 'next/image';
 import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
+import { useChangeLocale, useCurrentLocale, useI18n } from "@/locales/client";
 
 import {
   DropdownMenu,
@@ -20,6 +21,21 @@ import {
 
 export function SidebarUserNav({ user }: { user: User }) {
   const { setTheme, theme } = useTheme();
+  const changeLocale = useChangeLocale();
+  const currentLocale = useCurrentLocale();
+  const t = useI18n();
+
+  const handleLanguageChange = () => {
+    const nextLocale = currentLocale === 'en' ? 'zh' : 'en';
+    changeLocale(nextLocale);
+  };
+
+  const getLanguageSwitchText = () => {
+    if (currentLocale === 'en') {
+      return "切换为中文";
+    }
+    return "Switch to English";
+  };
 
   return (
     <SidebarMenu>
@@ -44,9 +60,16 @@ export function SidebarUserNav({ user }: { user: User }) {
           >
             <DropdownMenuItem
               className="cursor-pointer"
+              onSelect={handleLanguageChange}
+            >
+              {getLanguageSwitchText()}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="cursor-pointer"
               onSelect={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             >
-              {`Toggle ${theme === 'light' ? 'dark' : 'light'} mode`}
+              {t('common.theme', { mode: theme === 'light' ? t('common.dark') : t('common.light') })}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -59,7 +82,7 @@ export function SidebarUserNav({ user }: { user: User }) {
                   });
                 }}
               >
-                Sign out
+                {t('common.signOut')}
               </button>
             </DropdownMenuItem>
           </DropdownMenuContent>

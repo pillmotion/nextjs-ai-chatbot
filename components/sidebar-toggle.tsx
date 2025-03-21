@@ -9,11 +9,13 @@ import {
 
 import { SidebarLeftIcon } from './icons';
 import { Button } from './ui/button';
+import { useI18n } from '@/locales/client';
 
 export function SidebarToggle({
   className,
 }: ComponentProps<typeof SidebarTrigger>) {
   const { toggleSidebar } = useSidebar();
+  const t = useI18n();
 
   return (
     <Tooltip>
@@ -26,7 +28,7 @@ export function SidebarToggle({
           <SidebarLeftIcon size={16} />
         </Button>
       </TooltipTrigger>
-      <TooltipContent align="start">Toggle Sidebar</TooltipContent>
+      <TooltipContent align="start">{t('common.sidebarToggle')}</TooltipContent>
     </Tooltip>
   );
 }

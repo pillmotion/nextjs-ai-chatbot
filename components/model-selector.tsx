@@ -14,6 +14,7 @@ import { chatModels } from '@/lib/ai/models';
 import { cn } from '@/lib/utils';
 
 import { CheckCircleFillIcon, ChevronDownIcon } from './icons';
+import { useParams } from 'next/navigation';
 
 export function ModelSelector({
   selectedModelId,
@@ -24,10 +25,36 @@ export function ModelSelector({
   const [open, setOpen] = useState(false);
   const [optimisticModelId, setOptimisticModelId] =
     useOptimistic(selectedModelId);
+  const params = useParams();
+
+  const localizedModels = useMemo(() => {
+    // 直接从 URL 参数获取语言
+    const locale = params.locale as string || 'en';
+
+    return chatModels.map(model => {
+      if (locale === 'zh') {
+        if (model.id === 'chat-model') {
+          return {
+            ...model,
+            name: '聊天模型',
+            description: '适用于各种用途的主要模型',
+          };
+        } else if (model.id === 'chat-model-reasoning') {
+          return {
+            ...model,
+            name: '推理模型',
+            description: '使用高级推理能力',
+          };
+        }
+      }
+      // 英文或其他情况返回原始值
+      return model;
+    });
+  }, [params.locale]);  // 只依赖于 locale 参数变化
 
   const selectedChatModel = useMemo(
-    () => chatModels.find((chatModel) => chatModel.id === optimisticModelId),
-    [optimisticModelId],
+    () => localizedModels.find((chatModel) => chatModel.id === optimisticModelId),
+    [localizedModels, optimisticModelId],
   );
 
   return (
@@ -49,7 +76,7 @@ export function ModelSelector({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="min-w-[300px]">
-        {chatModels.map((chatModel) => {
+        {localizedModels.map((chatModel) => {
           const { id } = chatModel;
 
           return (

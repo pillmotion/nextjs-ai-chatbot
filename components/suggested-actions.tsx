@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import { memo } from 'react';
-import { UseChatHelpers } from '@ai-sdk/react';
+import type { UseChatHelpers } from '@ai-sdk/react';
+import { useI18n } from '@/locales/client';
 
 interface SuggestedActionsProps {
   chatId: string;
@@ -11,26 +12,27 @@ interface SuggestedActionsProps {
 }
 
 function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
+  const t = useI18n();
   const suggestedActions = [
     {
-      title: 'What are the advantages',
-      label: 'of using Next.js?',
-      action: 'What are the advantages of using Next.js?',
+      title: t('suggestedActions.nextjs.title'),
+      label: t('suggestedActions.nextjs.label'),
+      action: t('suggestedActions.nextjs.action'),
     },
     {
-      title: 'Write code to',
-      label: `demonstrate djikstra's algorithm`,
-      action: `Write code to demonstrate djikstra's algorithm`,
+      title: t('suggestedActions.dijkstra.title'),
+      label: t('suggestedActions.dijkstra.label'),
+      action: t('suggestedActions.dijkstra.action'),
     },
     {
-      title: 'Help me write an essay',
-      label: `about silicon valley`,
-      action: `Help me write an essay about silicon valley`,
+      title: t('suggestedActions.essay.title'),
+      label: t('suggestedActions.essay.label'),
+      action: t('suggestedActions.essay.action'),
     },
     {
-      title: 'What is the weather',
-      label: 'in San Francisco?',
-      action: 'What is the weather in San Francisco?',
+      title: t('suggestedActions.weather.title'),
+      label: t('suggestedActions.weather.label'),
+      action: t('suggestedActions.weather.action'),
     },
   ];
 
