@@ -2,8 +2,13 @@ import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import localFont from "next/font/local";
 import { ThemeProvider } from '@/components/theme-provider';
+import { I18nProviderClient } from "@/locales/client";
 
-import './globals.css';
+import '../globals.css';
+
+export async function generateStaticParams() {
+  return ['en', 'zh'].map((locale) => ({ locale }));
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.isllm.com'),
@@ -16,12 +21,12 @@ export const viewport = {
 };
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   display: "swap",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   display: "swap",
 });
@@ -48,12 +53,15 @@ const THEME_COLOR_SCRIPT = `\
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
   return (
     <html
-      lang="en"
+      lang={locale}
       // `next-themes` injects an extra classname to the body element to avoid
       // visual flicker before hydration. Hence the `suppressHydrationWarning`
       // prop is necessary to avoid the React hydration mismatch warning.
@@ -69,15 +77,17 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Toaster position="top-center" />
-          {children}
-        </ThemeProvider>
+        <I18nProviderClient locale={locale}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Toaster position="top-center" />
+            {children}
+          </ThemeProvider>
+        </I18nProviderClient>
       </body>
     </html>
   );
