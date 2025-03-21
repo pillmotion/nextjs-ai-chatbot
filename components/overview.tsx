@@ -1,9 +1,14 @@
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+'use client';
 
-import { MessageIcon, VercelIcon } from './icons';
+import { motion } from 'framer-motion';
+import { SplineScene } from "@/components/ui/splite";
+import { Card } from "@/components/ui/card";
+import { Spotlight } from "@/components/ui/spotlight";
+import { useI18n } from "@/locales/client";
 
 export const Overview = () => {
+  const t = useI18n();
+
   return (
     <motion.div
       key="overview"
@@ -13,40 +18,32 @@ export const Overview = () => {
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ delay: 0.5 }}
     >
-      <div className="rounded-xl p-6 flex flex-col gap-8 leading-relaxed text-center max-w-xl">
-        <p className="flex flex-row justify-center gap-4 items-center">
-          <VercelIcon size={32} />
-          <span>+</span>
-          <MessageIcon size={32} />
-        </p>
-        <p>
-          This is an{' '}
-          <Link
-            className="font-medium underline underline-offset-4"
-            href="https://github.com/vercel/ai-chatbot"
-            target="_blank"
-          >
-            open source
-          </Link>{' '}
-          chatbot template built with Next.js and the AI SDK by Vercel. It uses
-          the{' '}
-          <code className="rounded-md bg-muted px-1 py-0.5">streamText</code>{' '}
-          function in the server and the{' '}
-          <code className="rounded-md bg-muted px-1 py-0.5">useChat</code> hook
-          on the client to create a seamless chat experience.
-        </p>
-        <p>
-          You can learn more about the AI SDK by visiting the{' '}
-          <Link
-            className="font-medium underline underline-offset-4"
-            href="https://sdk.vercel.ai/docs"
-            target="_blank"
-          >
-            docs
-          </Link>
-          .
-        </p>
-      </div>
+      <Card className="w-full h-[500px] bg-gradient-to-b from-background to-background/80 relative overflow-hidden mb-8 rounded-xl border border-muted/20">
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20 from-primary/20 via-primary/10 to-transparent dark:from-primary/30 dark:via-primary/20 dark:to-transparent"
+          size={260}
+        />
+
+        <div className="flex flex-col md:flex-row h-full">
+          {/* Left content */}
+          <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70 dark:from-foreground dark:to-foreground/60">
+              {t('overview.title')}
+            </h1>
+            <p className="mt-4 text-foreground/80 max-w-lg dark:text-foreground/70">
+              {t('overview.description')}
+            </p>
+          </div>
+
+          {/* Right content */}
+          <div className="flex-1 relative">
+            <SplineScene
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
+          </div>
+        </div>
+      </Card>
     </motion.div>
   );
 };

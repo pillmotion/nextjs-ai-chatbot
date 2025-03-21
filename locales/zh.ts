@@ -1,4 +1,26 @@
 export default {
+  overview: {
+    title: 'AI 聊天机器人助手',
+    description:
+      '体验与我们的 AI 助手的无缝对话。由先进的语言模型提供支持，它能理解上下文，提供有用的回答，使您的数字交互更加直观。',
+  },
+  messageReasoning: {
+    title: '推理过程',
+    reasoned: '思考了几秒钟',
+  },
+  messageActions: {
+    copy: '复制',
+    upvoteResponse: '赞同回答',
+    downvoteResponse: '不赞同回答',
+    noTextToCopy: '没有可复制的文本！',
+    copiedToClipboard: '已复制到剪贴板！',
+    upvoting: '正在赞同回答...',
+    upvoted: '已赞同回答！',
+    upvoteError: '赞同回答失败。',
+    downvoting: '正在不赞同回答...',
+    downvoted: '已不赞同回答！',
+    downvoteError: '不赞同回答失败。',
+  },
   auth: {
     signIn: {
       title: '登录',
@@ -96,6 +118,11 @@ export default {
       last7days: '最近7天',
       last30days: '最近30天',
       older: '更早',
+      more: '更多',
+      share: '分享',
+      private: '私密',
+      public: '公开',
+      delete: '删除',
     },
     delete: {
       title: '您确定要删除吗？',
@@ -103,6 +130,9 @@ export default {
         '此操作无法撤销。这将永久删除您的聊天记录并从我们的服务器中移除。',
       cancel: '取消',
       continue: '继续',
+      loading: '正在删除聊天...',
+      success: '聊天已删除成功',
+      error: '删除聊天失败',
     },
   },
 } as const;

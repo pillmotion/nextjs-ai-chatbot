@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ChevronDownIcon, LoaderIcon } from './icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Markdown } from './markdown';
+import { useI18n } from '@/locales/client';
 
 interface MessageReasoningProps {
   isLoading: boolean;
@@ -15,6 +16,7 @@ export function MessageReasoning({
   reasoning,
 }: MessageReasoningProps) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const t = useI18n();
 
   const variants = {
     collapsed: {
@@ -35,14 +37,14 @@ export function MessageReasoning({
     <div className="flex flex-col">
       {isLoading ? (
         <div className="flex flex-row gap-2 items-center">
-          <div className="font-medium">Reasoning</div>
+          <div className="font-medium">{t('messageReasoning.title')}</div>
           <div className="animate-spin">
             <LoaderIcon />
           </div>
         </div>
       ) : (
         <div className="flex flex-row gap-2 items-center">
-          <div className="font-medium">Reasoned for a few seconds</div>
+          <div className="font-medium">{t('messageReasoning.reasoned')}</div>
           <button
             data-testid="message-reasoning-toggle"
             type="button"

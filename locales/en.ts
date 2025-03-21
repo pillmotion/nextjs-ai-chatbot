@@ -1,4 +1,26 @@
 export default {
+  overview: {
+    title: 'AI Chatbot Assistant',
+    description:
+      'Experience seamless conversations with our AI assistant. Powered by advanced language models, it understands context, provides helpful responses, and makes your digital interactions more intuitive.',
+  },
+  messageReasoning: {
+    title: 'Reasoning',
+    reasoned: 'Reasoned for a few seconds',
+  },
+  messageActions: {
+    copy: 'Copy',
+    upvoteResponse: 'Upvote Response',
+    downvoteResponse: 'Downvote Response',
+    noTextToCopy: "There's no text to copy!",
+    copiedToClipboard: 'Copied to clipboard!',
+    upvoting: 'Upvoting Response...',
+    upvoted: 'Upvoted Response!',
+    upvoteError: 'Failed to upvote response.',
+    downvoting: 'Downvoting Response...',
+    downvoted: 'Downvoted Response!',
+    downvoteError: 'Failed to downvote response.',
+  },
   auth: {
     signIn: {
       title: 'Sign In',
@@ -96,6 +118,11 @@ export default {
       last7days: 'Last 7 days',
       last30days: 'Last 30 days',
       older: 'Older',
+      more: 'More',
+      share: 'Share',
+      private: 'Private',
+      public: 'Public',
+      delete: 'Delete',
     },
     delete: {
       title: 'Are you absolutely sure?',
@@ -103,6 +130,9 @@ export default {
         'This action cannot be undone. This will permanently delete your chat and remove it from our servers.',
       cancel: 'Cancel',
       continue: 'Continue',
+      loading: 'Deleting chat...',
+      success: 'Chat deleted successfully',
+      error: 'Failed to delete chat',
     },
   },
 } as const;
