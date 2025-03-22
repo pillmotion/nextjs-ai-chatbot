@@ -29,7 +29,7 @@ export const myProvider = isTestEnvironment
           model: groq('deepseek-r1-distill-llama-70b'),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': openai('gpt-4-turbo'),
+        'title-model': openai('gpt-4o-mini'),
         'artifact-model': openai('gpt-4o-mini'),
       },
       imageModels: {

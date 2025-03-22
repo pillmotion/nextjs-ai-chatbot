@@ -139,4 +139,24 @@ export default {
     edit_message: 'Edit message',
     thinking: 'Hmm...',
   },
+  document: {
+    actions: {
+      create: {
+        present: 'Creating',
+        past: 'Created',
+      },
+      update: {
+        present: 'Updating',
+        past: 'Updated',
+      },
+      requestSuggestions: {
+        present: 'Adding suggestions',
+        past: 'Added suggestions to',
+      },
+    },
+    errors: {
+      viewingShared:
+        'Viewing files in shared chats is currently not supported.',
+    },
+  },
 } as const;

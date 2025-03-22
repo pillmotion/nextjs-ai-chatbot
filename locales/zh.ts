@@ -139,4 +139,23 @@ export default {
     edit_message: '编辑消息',
     thinking: '思考中...',
   },
+  document: {
+    actions: {
+      create: {
+        present: '正在创建',
+        past: '已创建',
+      },
+      update: {
+        present: '正在更新',
+        past: '已更新',
+      },
+      requestSuggestions: {
+        present: '正在添加建议',
+        past: '已添加建议到',
+      },
+    },
+    errors: {
+      viewingShared: '目前不支持在共享聊天中查看文件。',
+    },
+  },
 } as const;

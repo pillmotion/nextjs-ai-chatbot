@@ -4,20 +4,26 @@ import type { ArtifactKind } from './artifact';
 import { FileIcon, LoaderIcon, MessageIcon, PencilEditIcon } from './icons';
 import { toast } from 'sonner';
 import { useArtifact } from '@/hooks/use-artifact';
+import { useI18n } from '@/locales/client';
 
 const getActionText = (
+  t: ReturnType<typeof useI18n>,
   type: 'create' | 'update' | 'request-suggestions',
   tense: 'present' | 'past',
 ) => {
   switch (type) {
     case 'create':
-      return tense === 'present' ? 'Creating' : 'Created';
+      return tense === 'present'
+        ? t('document.actions.create.present')
+        : t('document.actions.create.past');
     case 'update':
-      return tense === 'present' ? 'Updating' : 'Updated';
+      return tense === 'present'
+        ? t('document.actions.update.present')
+        : t('document.actions.update.past');
     case 'request-suggestions':
       return tense === 'present'
-        ? 'Adding suggestions'
-        : 'Added suggestions to';
+        ? t('document.actions.requestSuggestions.present')
+        : t('document.actions.requestSuggestions.past');
     default:
       return null;
   }
@@ -35,6 +41,7 @@ function PureDocumentToolResult({
   isReadonly,
 }: DocumentToolResultProps) {
   const { setArtifact } = useArtifact();
+  const t = useI18n();
 
   return (
     <button
@@ -43,7 +50,7 @@ function PureDocumentToolResult({
       onClick={(event) => {
         if (isReadonly) {
           toast.error(
-            'Viewing files in shared chats is currently not supported.',
+            t('document.errors.viewingShared')
           );
           return;
         }
@@ -78,7 +85,7 @@ function PureDocumentToolResult({
         ) : null}
       </div>
       <div className="text-left">
-        {`${getActionText(type, 'past')} "${result.title}"`}
+        {`${getActionText(t, type, 'past')} "${result.title}"`}
       </div>
     </button>
   );
@@ -98,7 +105,7 @@ function PureDocumentToolCall({
   isReadonly,
 }: DocumentToolCallProps) {
   const { setArtifact } = useArtifact();
-
+  const t = useI18n();
   return (
     <button
       type="button"
@@ -106,7 +113,7 @@ function PureDocumentToolCall({
       onClick={(event) => {
         if (isReadonly) {
           toast.error(
-            'Viewing files in shared chats is currently not supported.',
+            t('document.errors.viewingShared')
           );
           return;
         }
@@ -139,7 +146,7 @@ function PureDocumentToolCall({
         </div>
 
         <div className="text-left">
-          {`${getActionText(type, 'present')} ${args.title ? `"${args.title}"` : ''}`}
+          {`${getActionText(t, type, 'present')} ${args.title ? `"${args.title}"` : ''}`}
         </div>
       </div>
 
