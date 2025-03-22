@@ -86,13 +86,6 @@ const PurePreviewMessage = ({
               const { type } = part;
               const key = `message-${message.id}-part-${index}`;
 
-              console.log(`[消息部分]`, {
-                messageId: message.id,
-                partIndex: index,
-                partType: type,
-                partContent: part
-              });
-
               if (type === 'reasoning') {
                 return (
                   <MessageReasoning
@@ -158,14 +151,6 @@ const PurePreviewMessage = ({
               if (type === 'tool-invocation') {
                 const { toolInvocation } = part;
                 const { toolName, toolCallId, state } = toolInvocation;
-
-                console.log(`[工具调用]`, {
-                  toolName,
-                  toolCallId,
-                  state,
-                  args: state === 'call' ? toolInvocation.args : null,
-                  result: state === 'result' ? toolInvocation.result : null
-                });
 
                 if (state === 'call') {
                   const { args } = toolInvocation;

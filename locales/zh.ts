@@ -158,4 +158,13 @@ export default {
       viewingShared: '目前不支持在共享聊天中查看文件。',
     },
   },
+  map: {
+    loading: '加载地图中...',
+    errors: {
+      loadFailed: '地图加载失败',
+      scriptFailed: '地图脚本加载失败',
+      timeout: '等待地图API超时',
+      containerNotFound: '地图容器不存在',
+    },
+  },
 } as const;

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { LoaderIcon } from 'lucide-react';
 import cn from 'classnames';
+import { useI18n } from '@/locales/client';
 
 interface MapEditorProps {
   content: string;
@@ -13,6 +14,7 @@ let isScriptInitiated = false;
 let mapScriptLoaded = false;
 
 export function MapEditor({ content, status, isInline }: MapEditorProps) {
+  const t = useI18n(); // 获取翻译函数
   const containerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +25,6 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
     try {
       return content ? JSON.parse(content) : null;
     } catch (err) {
-      console.warn('解析地图数据失败:', err);
       return null;
     }
   }, [content]);
@@ -40,8 +41,6 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
     if (!isScriptInitiated && typeof window !== 'undefined') {
       isScriptInitiated = true;
 
-      console.log('初始化地图脚本加载');
-
       // 设置安全配置
       window._AMapSecurityConfig = {
         securityJsCode: process.env.NEXT_PUBLIC_AMAP_SECURITY_CODE || '',
@@ -55,19 +54,16 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
           script.async = true;
 
           script.onload = () => {
-            console.log('地图脚本加载成功');
             mapScriptLoaded = true;
             resolve();
           };
 
-          script.onerror = (e) => {
-            console.error('地图脚本加载失败:', e);
-            reject(new Error('地图脚本加载失败'));
+          script.onerror = () => {
+            reject(new Error(t('map.errors.scriptFailed')));
           };
 
           document.head.appendChild(script);
         } catch (err) {
-          console.error('添加脚本标签失败:', err);
           reject(err);
         }
       });
@@ -80,11 +76,10 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
 
       const checkAMap = () => {
         if (window.AMap) {
-          console.log('AMap对象已可用');
           mapScriptLoaded = true;
           resolve();
         } else if (attempts >= maxAttempts) {
-          reject(new Error('等待地图API超时'));
+          reject(new Error(t('map.errors.timeout')));
         } else {
           attempts++;
           setTimeout(checkAMap, 100);
@@ -103,7 +98,6 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
     }
 
     let isMounted = true;
-    console.log('开始初始化地图, 数据:', mapData);
 
     // 等待DOM更新后再初始化地图
     const timer = setTimeout(() => {
@@ -114,25 +108,20 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
 
           // 检查组件是否仍挂载
           if (!isMounted) {
-            console.log('组件已卸载，停止初始化');
             return;
           }
 
           // 在此处检查容器
           if (!containerRef.current) {
-            console.error('地图容器元素不存在，可能是DOM未完成渲染');
-            throw new Error('地图容器不存在');
+            throw new Error(t('map.errors.containerNotFound'));
           }
-
-          console.log('容器已找到，准备创建地图实例');
 
           // 清理旧实例
           if (mapInstanceRef.current) {
             try {
-              console.log('销毁旧地图实例');
               mapInstanceRef.current.destroy();
             } catch (err) {
-              console.warn('销毁旧地图实例失败:', err);
+              // 忽略错误
             }
             mapInstanceRef.current = null;
           }
@@ -141,8 +130,6 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
           if (containerRef.current) {
             containerRef.current.innerHTML = '';
           }
-
-          console.log('创建新地图实例');
 
           // 创建地图实例
           const map = new window.AMap.Map(containerRef.current, {
@@ -172,13 +159,11 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
           map.add(marker);
 
           // 地图加载完成
-          console.log('地图创建成功');
           if (isMounted) {
             setIsLoading(false);
             setError(null);
           }
         } catch (err) {
-          console.error('地图初始化失败:', err);
           if (isMounted) {
             setError(err instanceof Error ? err.message : String(err));
             setIsLoading(false);
@@ -190,20 +175,19 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
     }, 100); // 给DOM一点时间来渲染
 
     return () => {
-      console.log('地图组件卸载');
       clearTimeout(timer);
       isMounted = false;
       // 清理地图实例
       if (mapInstanceRef.current) {
         try {
           mapInstanceRef.current.destroy();
-        } catch (err) {
-          console.warn('清理地图实例失败:', err);
+        } catch {
+          // 忽略错误
         }
         mapInstanceRef.current = null;
       }
     };
-  }, [mapData, status, isInline]);
+  }, [mapData, status, isInline, t]);
 
   // 修改渲染逻辑 - 始终渲染容器，只是显示/隐藏加载状态
   return (
@@ -230,7 +214,7 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
               <div className="animate-spin">
                 <LoaderIcon />
               </div>
-              <div>加载地图中...</div>
+              <div>{t('map.loading')}</div>
             </div>
           </div>
         )}
@@ -239,7 +223,7 @@ export function MapEditor({ content, status, isInline }: MapEditorProps) {
         {error && !isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-zinc-800/80">
             <div className="text-red-500 p-4 text-center">
-              <p>地图加载失败</p>
+              <p>{t('map.errors.loadFailed')}</p>
               <p className="text-sm">{error}</p>
             </div>
           </div>

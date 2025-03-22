@@ -159,4 +159,13 @@ export default {
         'Viewing files in shared chats is currently not supported.',
     },
   },
+  map: {
+    loading: 'Loading map...',
+    errors: {
+      loadFailed: 'Map loading failed',
+      scriptFailed: 'Failed to load map script',
+      timeout: 'Waiting for map API timed out',
+      containerNotFound: 'Map container not found',
+    },
+  },
 } as const;
