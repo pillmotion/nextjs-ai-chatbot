@@ -12,8 +12,8 @@ export async function generateStaticParams() {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.isllm.com'),
-  title: 'Next.js Chatbot Template',
-  description: 'Next.js chatbot template using the AI SDK.',
+  title: 'Chatbot',
+  description: 'Chatbot using the AI SDK.',
 };
 
 export const viewport = {

@@ -89,9 +89,9 @@ export default {
       action: '帮我写一篇关于硅谷的文章',
     },
     weather: {
-      title: '旧金山的天气',
+      title: '莲都区的天气',
       label: '怎么样？',
-      action: '旧金山现在的天气怎么样？',
+      action: '莲都区现在的天气怎么样？',
     },
   },
   chat: {
