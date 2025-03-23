@@ -168,4 +168,19 @@ export default {
       containerNotFound: 'Map container not found',
     },
   },
+  versionFooter: {
+    viewingPrevious: 'You are viewing a previous version',
+    restoreToEdit: 'Restore this version to make edits',
+    restore: 'Restore this version',
+    backToLatest: 'Back to latest version',
+  },
+  artifact: {
+    errors: {
+      definitionNotFound: 'Artifact definition not found!',
+    },
+    status: {
+      savingChanges: 'Saving changes...',
+      updated: 'Updated {timestamp}',
+    },
+  },
 } as const;

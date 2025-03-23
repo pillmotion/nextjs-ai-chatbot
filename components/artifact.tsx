@@ -1,5 +1,6 @@
 import type { Attachment, UIMessage } from 'ai';
 import { formatDistance } from 'date-fns';
+import { zhCN, enUS } from 'date-fns/locale';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   type Dispatch,
@@ -28,6 +29,7 @@ import { textArtifact } from '@/artifacts/text/client';
 import { mapArtifact } from '@/artifacts/map/client';
 import equal from 'fast-deep-equal';
 import { UseChatHelpers } from '@ai-sdk/react';
+import { useCurrentLocale, useI18n } from '@/locales/client';
 
 export const artifactDefinitions = [
   textArtifact,
@@ -85,6 +87,9 @@ function PureArtifact({
   isReadonly: boolean;
 }) {
   const { artifact, setArtifact, metadata, setMetadata } = useArtifact();
+  const t = useI18n();
+  const currentLocaleCode = useCurrentLocale();
+  const dateLocale = currentLocaleCode === 'zh' ? zhCN : enUS;
 
   const {
     data: documents,
@@ -239,7 +244,7 @@ function PureArtifact({
   );
 
   if (!artifactDefinition) {
-    throw new Error('Artifact definition not found!');
+    throw new Error(t('artifact.errors.definitionNotFound'));
   }
 
   useEffect(() => {
@@ -348,56 +353,56 @@ function PureArtifact({
             initial={
               isMobile
                 ? {
-                    opacity: 1,
-                    x: artifact.boundingBox.left,
-                    y: artifact.boundingBox.top,
-                    height: artifact.boundingBox.height,
-                    width: artifact.boundingBox.width,
-                    borderRadius: 50,
-                  }
+                  opacity: 1,
+                  x: artifact.boundingBox.left,
+                  y: artifact.boundingBox.top,
+                  height: artifact.boundingBox.height,
+                  width: artifact.boundingBox.width,
+                  borderRadius: 50,
+                }
                 : {
-                    opacity: 1,
-                    x: artifact.boundingBox.left,
-                    y: artifact.boundingBox.top,
-                    height: artifact.boundingBox.height,
-                    width: artifact.boundingBox.width,
-                    borderRadius: 50,
-                  }
+                  opacity: 1,
+                  x: artifact.boundingBox.left,
+                  y: artifact.boundingBox.top,
+                  height: artifact.boundingBox.height,
+                  width: artifact.boundingBox.width,
+                  borderRadius: 50,
+                }
             }
             animate={
               isMobile
                 ? {
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                    height: windowHeight,
-                    width: windowWidth ? windowWidth : 'calc(100dvw)',
-                    borderRadius: 0,
-                    transition: {
-                      delay: 0,
-                      type: 'spring',
-                      stiffness: 200,
-                      damping: 30,
-                      duration: 5000,
-                    },
-                  }
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                  height: windowHeight,
+                  width: windowWidth ? windowWidth : 'calc(100dvw)',
+                  borderRadius: 0,
+                  transition: {
+                    delay: 0,
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 30,
+                    duration: 5000,
+                  },
+                }
                 : {
-                    opacity: 1,
-                    x: 400,
-                    y: 0,
-                    height: windowHeight,
-                    width: windowWidth
-                      ? windowWidth - 400
-                      : 'calc(100dvw-400px)',
-                    borderRadius: 0,
-                    transition: {
-                      delay: 0,
-                      type: 'spring',
-                      stiffness: 200,
-                      damping: 30,
-                      duration: 5000,
-                    },
-                  }
+                  opacity: 1,
+                  x: 400,
+                  y: 0,
+                  height: windowHeight,
+                  width: windowWidth
+                    ? windowWidth - 400
+                    : 'calc(100dvw-400px)',
+                  borderRadius: 0,
+                  transition: {
+                    delay: 0,
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 30,
+                    duration: 5000,
+                  },
+                }
             }
             exit={{
               opacity: 0,
@@ -419,17 +424,20 @@ function PureArtifact({
 
                   {isContentDirty ? (
                     <div className="text-sm text-muted-foreground">
-                      Saving changes...
+                      {t('artifact.status.savingChanges')}
                     </div>
                   ) : document ? (
                     <div className="text-sm text-muted-foreground">
-                      {`Updated ${formatDistance(
-                        new Date(document.createdAt),
-                        new Date(),
-                        {
-                          addSuffix: true,
-                        },
-                      )}`}
+                      {t('artifact.status.updated', {
+                        timestamp: formatDistance(
+                          new Date(document.createdAt),
+                          new Date(),
+                          {
+                            addSuffix: true,
+                            locale: dateLocale,
+                          },
+                        ),
+                      })}
                     </div>
                   ) : (
                     <div className="w-32 h-3 mt-2 bg-muted-foreground/20 rounded-md animate-pulse" />

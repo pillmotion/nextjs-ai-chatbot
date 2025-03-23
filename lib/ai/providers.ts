@@ -5,6 +5,7 @@ import {
 } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { groq } from '@ai-sdk/groq';
+import { xai } from '@ai-sdk/xai';
 import { isTestEnvironment } from '../constants';
 import {
   artifactModel,
@@ -33,6 +34,6 @@ export const myProvider = isTestEnvironment
         'artifact-model': openai('gpt-4o-mini'),
       },
       imageModels: {
-        'small-model': openai.image('dall-e-3'),
+        'small-model': xai.image('grok-2-image'),
       },
     });

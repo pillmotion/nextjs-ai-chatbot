@@ -12,6 +12,7 @@ import { getDocumentTimestampByIndex } from '@/lib/utils';
 import { LoaderIcon } from './icons';
 import { Button } from './ui/button';
 import { useArtifact } from '@/hooks/use-artifact';
+import { useI18n } from '@/locales/client';
 
 interface VersionFooterProps {
   handleVersionChange: (type: 'next' | 'prev' | 'toggle' | 'latest') => void;
@@ -25,6 +26,7 @@ export const VersionFooter = ({
   currentVersionIndex,
 }: VersionFooterProps) => {
   const { artifact } = useArtifact();
+  const t = useI18n();
 
   const { width } = useWindowSize();
   const isMobile = width < 768;
@@ -43,9 +45,9 @@ export const VersionFooter = ({
       transition={{ type: 'spring', stiffness: 140, damping: 20 }}
     >
       <div>
-        <div>You are viewing a previous version</div>
+        <div>{t('versionFooter.viewingPrevious')}</div>
         <div className="text-muted-foreground text-sm">
-          Restore this version to make edits
+          {t('versionFooter.restoreToEdit')}
         </div>
       </div>
 
@@ -69,24 +71,24 @@ export const VersionFooter = ({
               {
                 optimisticData: documents
                   ? [
-                      ...documents.filter((document) =>
-                        isAfter(
-                          new Date(document.createdAt),
-                          new Date(
-                            getDocumentTimestampByIndex(
-                              documents,
-                              currentVersionIndex,
-                            ),
+                    ...documents.filter((document) =>
+                      isAfter(
+                        new Date(document.createdAt),
+                        new Date(
+                          getDocumentTimestampByIndex(
+                            documents,
+                            currentVersionIndex,
                           ),
                         ),
                       ),
-                    ]
+                    ),
+                  ]
                   : [],
               },
             );
           }}
         >
-          <div>Restore this version</div>
+          <div>{t('versionFooter.restore')}</div>
           {isMutating && (
             <div className="animate-spin">
               <LoaderIcon />
@@ -99,7 +101,7 @@ export const VersionFooter = ({
             handleVersionChange('latest');
           }}
         >
-          Back to latest version
+          {t('versionFooter.backToLatest')}
         </Button>
       </div>
     </motion.div>

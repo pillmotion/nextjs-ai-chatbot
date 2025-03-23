@@ -167,4 +167,19 @@ export default {
       containerNotFound: '地图容器不存在',
     },
   },
+  versionFooter: {
+    viewingPrevious: '您正在查看之前的版本',
+    restoreToEdit: '恢复此版本以进行编辑',
+    restore: '恢复此版本',
+    backToLatest: '返回最新版本',
+  },
+  artifact: {
+    errors: {
+      definitionNotFound: '未找到构件定义！',
+    },
+    status: {
+      savingChanges: '正在保存更改...',
+      updated: '更新于 {timestamp}',
+    },
+  },
 } as const;
